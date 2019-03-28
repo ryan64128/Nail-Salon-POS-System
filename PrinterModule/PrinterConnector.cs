@@ -1,4 +1,12 @@
-﻿using System;
+﻿/**
+ * PrinterConnector.cs
+ * 
+ * @Description A class that facilitates the use of a POS terminal printer by encapsulating underlying details and providing an application specific API 
+ * @Author Ryan Roberts
+ * @Dependencies Needs Business Logic class from BusinessLogicController namespace and DatabaseAccessor from DatabaseController namespace
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +22,12 @@ namespace PrinterModule
 {
     public class PrinterConnector : IPrinterModule
     {
+        // reference to a database object
         private IDatabaseAccess db;
+        
+        /**
+         * @Description collection string variables to simplify printer codes
+         */
         private string initPrinter = "\x1b@";
         private string smallText = "\x1b!\x01";
         private string normalText = "\x1b!\x00";
@@ -36,13 +49,18 @@ namespace PrinterModule
         private string tab = "\x9";
         private string moveForward = "\x1B\x5C\x0C\x00";
         private string _currencyTabPoint = "\x16";
+        
+        // string variable to hold info on how to display currency
         private string currencyFormat = @"$#,##0.00;-$#,##0.00";
 
+        // variable used by Windows API to access printers
         IntPtr hPrinter = new IntPtr(0);
+
         public PrinterConnector(IDatabaseAccess db)
         {
             this.db = db;
         }
+
         // Structure and API declarions:
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         public class DOCINFOA
@@ -51,6 +69,9 @@ namespace PrinterModule
             [MarshalAs(UnmanagedType.LPStr)] public string pOutputFile;
             [MarshalAs(UnmanagedType.LPStr)] public string pDataType;
         }
+        /**
+         * @Description the following DLLImports define Windows API functions from winspool.Drv driver to be called later when using printer
+         */
         [DllImport("winspool.Drv", EntryPoint = "OpenPrinterA", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
         public static extern bool OpenPrinter([MarshalAs(UnmanagedType.LPStr)] string szPrinter, out IntPtr hPrinter, IntPtr pd);
 
@@ -72,24 +93,34 @@ namespace PrinterModule
         [DllImport("winspool.Drv", EntryPoint = "WritePrinter", SetLastError = true, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
         public static extern bool WritePrinter(IntPtr hPrinter, IntPtr pBytes, Int32 dwCount, out Int32 dwWritten);
 
+        /**
+         * @desc this function is called by the associated BusinessLogic class when it requests the printing of a specific order
+         * @param IInvoice object called invoice which holds all the needed information in order to print an order
+         * @returns void
+         */
         public void printOrder(IInvoice invoice)
         {
             DOCINFOA docInfo = new DOCINFOA();
 
-            if (OpenPrinter("POS-58", out hPrinter, IntPtr.Zero))
+            if (OpenPrinter("POS-58", out hPrinter, IntPtr.Zero)) // if WINAPI function OpenPrinter is successful..
             {
-                if (StartDocPrinter(hPrinter, 1, docInfo))
+                if (StartDocPrinter(hPrinter, 1, docInfo))        // if WINAPI function StartDocPrinter is successful
                 {
-                    if (StartPagePrinter(hPrinter))
+                    if (StartPagePrinter(hPrinter))               // if WINAPI function StartPagePrinter is successful
                     {
+                        // printBody 
                         printBody(invoice);
-                        //printTabTest();
                     }
                 }
                 ClosePrinter(hPrinter);
             }
         }
 
+        /**
+         * @desc this function is called by the associated BusinessLogic class when it requests the printing of a cash drawer
+         * @param ICashReport object called cashReport which holds all the needed information in order to print a cash drawer report
+         * @returns void
+         */
         public void printDrawerCashReport(ICashReport cashReport)
         {
             DOCINFOA docInfo = new DOCINFOA();
@@ -101,7 +132,6 @@ namespace PrinterModule
                     if (StartPagePrinter(hPrinter))
                     {
                         printCashReportBody(cashReport);
-                        //printTabTest();
                     }
                 }
                 ClosePrinter(hPrinter);
