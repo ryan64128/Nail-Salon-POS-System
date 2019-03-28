@@ -1,0 +1,128 @@
+﻿<Window x:Class="NailSalonWPF.NailSalonHome"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:NailSalonWPF"
+      mc:Ignorable="d" 
+      d:DesignHeight="1080" d:DesignWidth="1920"
+      Title="NailSalon - Home" WindowState="Maximized" WindowStyle="None" Topmost="True" Focusable="True">
+
+
+    <DockPanel LastChildFill="False">
+        <Border Padding="10" Background="Gray" DockPanel.Dock="Top">
+            <DockPanel>
+                <Border Background="CornflowerBlue" DockPanel.Dock="Top" CornerRadius="10">
+                    <StackPanel Name="menuPanel" Background="BlueViolet" Margin="5" Orientation="Horizontal" Height="100">
+                        <Button Content="NEW ORDER" Margin="30,5,0,5" Width="200" Background="DodgerBlue" Foreground="White" FontSize="30" FontFamily="Calibri" FontWeight="Medium" Click="Button_Click_NewOrder"></Button>
+                        <Button Content="RETURN" Margin="30,5,0,5" Width="200" Background="Orchid" Foreground="White" FontSize="30" FontFamily="Calibri" FontWeight="Medium" Click="Button_Click_Return"></Button>
+                        <Button Content="LOG IN  REG" Focusable="False" Margin="150,5,0,5" Width="200" Background="LightCoral" Foreground="White" FontSize="30" FontFamily="Calibri" FontWeight="Medium" Click="Button_Click_LogOnCashDrawer"></Button>
+
+                        <Button Content="EDIT ITEM" Margin="30,5,0,5" Width="200" Background="Goldenrod" Foreground="White" FontSize="30" FontFamily="Calibri" FontWeight="Medium" Click="Button_Click_AddItem"></Button>
+                        <Button Content="REPORTS" Margin="30,5,0,5" Width="200" Background="LimeGreen" Foreground="White" FontSize="30" FontFamily="Calibri" FontWeight="Medium" Click="Button_Click_OpenReportsPage"></Button>
+                        <Button Content="CLOSE REG" Margin="30,5,0,5" Width="200" Background="PaleVioletRed" Foreground="White" FontSize="30" FontFamily="Calibri" FontWeight="Medium" Click="Button_Click_CloseCashDrawer"></Button>
+                    </StackPanel>
+                </Border>
+                <Border Background="CornflowerBlue" Padding="2" CornerRadius="10" DockPanel.Dock="Left" >
+                    <StackPanel Background="LightGray" Width="Auto" Margin="5">
+                        <ListBox x:Name="ListBoxOrder" Width="541" Height="590" FontSize="20" FontFamily="Verdana" FontWeight="Bold">
+
+                        </ListBox>
+                        <Border Background="CornflowerBlue">
+                            <TextBox x:Name="TextBoxTotal" Background="SeaShell" Height="90" Margin="0,10,0,5" FontWeight="Bold" FontFamily="Verdana"></TextBox>
+                        </Border>
+                        <DockPanel LastChildFill="False" Background="CornflowerBlue">
+                            <TextBlock DockPanel.Dock="Left" x:Name="TextBlockTime" Padding="5,0,0,0" Height="50" Width="250" Background="BlueViolet" Foreground="White" FontFamily="Calibri" FontSize="20" FontWeight="Medium"></TextBlock>
+                            <TextBlock DockPanel.Dock="Right" x:Name="TextBlockEmployeeName" Padding="0,0,0,0" Height="50" Background="BlueViolet" Width="285" Foreground="White" FontFamily="Calibri" FontSize="20" FontWeight="Medium" HorizontalAlignment="Right" VerticalAlignment="Center">
+
+                            </TextBlock>
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
+                <Border Background="CornflowerBlue" DockPanel.Dock="Bottom" Padding="2" CornerRadius="10">
+                    <DockPanel Background="Black" Height="Auto" Margin="5" LastChildFill="False">
+                        <Grid Width="866" DockPanel.Dock="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="4" Margin="10" Background="Lime" Content="PAY CASH" Width="150" Height="100" FontFamily="Calibri" FontSize="30" FontWeight="Medium" Click="Button_Click_PayCash">
+
+                            </Button>
+                            <Button Grid.Column="3" Margin="3" Background="DodgerBlue" Foreground="White" Content="PAY CREDIT" Width="150" Height="100" FontFamily="Calibri" FontSize="30" FontWeight="Medium" Click="Button_Click_PayCredit"></Button>
+                            <Button Grid.Column="2" Margin="3" Background="Violet" Foreground="White" Content="PAY GIFT" Width="150" Height="100" FontFamily="Calibri" FontSize="30" FontWeight="Medium" Click="Button_Click_PayGift"></Button>
+                            <Button Grid.Column="1" Margin="3" Background="Red" Foreground="White" Content="VOID" Width="150" Height="100" FontFamily="Calibri" FontSize="30" FontWeight="Medium" Click="Button_Click_Void"></Button>
+                            <Button Grid.Column="0" Margin="3" Background="Orange" Foreground="Black" Content="SELL GIFT" Width="150" Height="100" FontFamily="Calibri" FontSize="30" FontWeight="Medium" Click="Button_Click_Sell_Gift"></Button>
+                        </Grid>
+                    </DockPanel>
+                </Border>
+                <Border Background="CornflowerBlue" DockPanel.Dock="Right" Padding="2" CornerRadius="10">
+                    <StackPanel Background="BlueViolet" Width="Auto" Margin="5">
+                        <TextBox x:Name="TextBoxNumbers" Width="478" Height="50" Margin="10" HorizontalContentAlignment="Right" FontSize="36" VerticalAlignment="Center" TextChanged="validate">
+
+                        </TextBox>
+                        <Grid Height="400" Margin="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"></RowDefinition>
+                                <RowDefinition Height="1*"></RowDefinition>
+                                <RowDefinition Height="1*"></RowDefinition>
+                                <RowDefinition Height="1*"></RowDefinition>
+                                <RowDefinition Height="1*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Button x:Name="Button7" Grid.Column="0" Grid.Row="0" Content="7" Background="DodgerBlue" FontSize="60" Foreground="White" Click="Button_Click_7">
+
+                            </Button>
+                            <Button x:Name="Button8" IsEnabled="True" Focusable="True" Grid.Column="1" Grid.Row="0" Content="8" Background="DodgerBlue" FontSize="60" Foreground="White" Click="Button_Click_8"></Button>
+                            <Button x:Name="Button9" Grid.Column="2" Grid.Row="0" Content="9" Background="DodgerBlue" FontSize="60" Foreground="White" Click="Button_Click_9"></Button>
+                            <Button x:Name="Button4" Grid.Column="0" Grid.Row="1" Content="4" Background="DodgerBlue" FontSize="60" Foreground="White" Click="Button_Click_4"></Button>
+                            <Button x:Name="Button5" Focusable="False" Grid.Column="1" Grid.Row="1" Content="5" Background="DodgerBlue" FontSize="60" Foreground="White" Click="Button_Click_5"></Button>
+                            <Button x:Name="Button6" Grid.Column="2" Grid.Row="1" Content="6" Background="DodgerBlue" FontSize="60" Foreground="White" Click="Button_Click_6"></Button>
+                            <Button x:Name="Button1" Grid.Column="0" Grid.Row="2" Content="1" Background="DodgerBlue" FontSize="60" Foreground="White" Click="Button_Click_1"></Button>
+                            <Button x:Name="Button2" Grid.Column="1" Grid.Row="2" Content="2" Background="DodgerBlue" FontSize="60" Foreground="White" Click="Button_Click_2"></Button>
+                            <Button x:Name="Button3" Grid.Column="2" Grid.Row="2" Content="3" Background="DodgerBlue" FontSize="60" Foreground="White" Click="Button_Click_3"></Button>
+                            <Button x:Name="Button00" Grid.Column="0" Grid.Row="3" Content="00" Background="DodgerBlue" FontSize="60" Foreground="White" Click="Button_Click_00"></Button>
+                            <Button x:Name="Button0" Grid.Column="1" Grid.Row="3" Content="0" Background="DodgerBlue" FontSize="60" Foreground="White" Click="Button_Click_0"></Button>
+                            <Button x:Name="ButtonPeriod" Grid.Column="2" Grid.Row="3" Content="." Background="DodgerBlue" FontSize="60" Foreground="White" Click="Button_Click_Period"></Button>
+                            <!-- Add Functionality Later <Button Grid.Column="0" Grid.Row="4" Content=""></Button> -->
+                            <Button x:Name="ButtonClear" Grid.Column="1" Grid.Row="4" Content="Clear" Background="DodgerBlue" FontSize="25" Foreground="White" Click="Button_Click_Clear"></Button>
+                            <Button x:Name="ButtonBackSpace" Grid.Column="2" Grid.Row="4" Content="Back Space" Background="DodgerBlue" FontSize="25" Foreground="White" Click="Button_Click_BackSpace"></Button>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Background="CornflowerBlue" CornerRadius="10" Padding="2">
+                    <StackPanel Background="BlueViolet" Margin="5">
+                        <Grid Name="ServiceButtonGrid" Height="700" Margin="25">
+                            <!--
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                                        <ColumnDefinition Width="1*"></ColumnDefinition>
+
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1*"></RowDefinition>
+                                        <RowDefinition Height="1*"></RowDefinition>
+                                        <RowDefinition Height="1*"></RowDefinition>
+                                        <RowDefinition Height="1*"></RowDefinition>
+                                        <RowDefinition Height="1*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Button Grid.Column="0" Grid.Row="0" Content="MANICURE" Width="180" Height="130" Background="Violet" Foreground="White" FontSize="30" FontFamily="Calibri" FontWeight="Medium" Click="Button_Click_Manicure"></Button>
+                                    <Button Grid.Column="1" Grid.Row="0" Content="PEDICURE" Width="180" Height="130" Background="Violet" Foreground="White" FontSize="30" FontFamily="Calibri" FontWeight="Medium" Click="Button_Click_Pedicure"></Button>
+                                -->
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </DockPanel>
+        </Border>
+        <StackPanel DockPanel.Dock="Bottom" Background="Orange" Height="50"></StackPanel>
+    </DockPanel>
+
+</Window>

@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>NailSalonIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -54,20 +57,62 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ReturnDialog.xaml.cs">
+      <DependentUpon>ReturnDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SellGiftCardDialog.xaml.cs">
+      <DependentUpon>SellGiftCardDialog.xaml</DependentUpon>
+    </Compile>
+    <Page Include="AddItemDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LogOnCashDrawer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="AddItemDialog.xaml.cs">
+      <DependentUpon>AddItemDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogOnCashDrawer.xaml.cs">
+      <DependentUpon>LogOnCashDrawer.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="NailSalonHome.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NailSalonReportPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReturnDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SellGiftCardDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NailSalonHome.xaml.cs">
+      <DependentUpon>NailSalonHome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NailSalonReportPage.xaml.cs">
+      <DependentUpon>NailSalonReportPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -92,6 +137,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessLogicController\BusinessLogicController.csproj">
+      <Project>{851be3e9-3ad3-42bb-bb94-a6b4b228189d}</Project>
+      <Name>BusinessLogicController</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatabaseController\DatabaseController.csproj">
+      <Project>{f8ba53b7-a474-4bb7-b010-8d6f87ca47d7}</Project>
+      <Name>DatabaseController</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PrinterModule\PrinterModule.csproj">
+      <Project>{0fe93e0a-eefb-4a7f-ab9b-96d4161c2e44}</Project>
+      <Name>PrinterModule</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="NailSalonIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
