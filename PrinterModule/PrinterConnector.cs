@@ -70,7 +70,7 @@ namespace PrinterModule
             [MarshalAs(UnmanagedType.LPStr)] public string pDataType;
         }
         /**
-         * @Description the following DLLImports define Windows API functions from winspool.Drv driver to be called later when using printer
+         * @Description the following DLLImports define Windows API functions from winspool.Drv driver to be called later when using printOrder and printCashReport functions
          */
         [DllImport("winspool.Drv", EntryPoint = "OpenPrinterA", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
         public static extern bool OpenPrinter([MarshalAs(UnmanagedType.LPStr)] string szPrinter, out IntPtr hPrinter, IntPtr pd);
@@ -101,18 +101,18 @@ namespace PrinterModule
         public void printOrder(IInvoice invoice)
         {
             DOCINFOA docInfo = new DOCINFOA();
-
+            // first parameter is the windows recognized name of the printer to be used
             if (OpenPrinter("POS-58", out hPrinter, IntPtr.Zero)) // if WINAPI function OpenPrinter is successful..
             {
                 if (StartDocPrinter(hPrinter, 1, docInfo))        // if WINAPI function StartDocPrinter is successful
                 {
                     if (StartPagePrinter(hPrinter))               // if WINAPI function StartPagePrinter is successful
                     {
-                        // printBody 
+                        // printBody function encapsulates a series of functions called to facilitate the printing of an order
                         printBody(invoice);
                     }
                 }
-                ClosePrinter(hPrinter);
+                ClosePrinter(hPrinter);                           // WINAPI function to close handle to printer
             }
         }
 
@@ -124,22 +124,29 @@ namespace PrinterModule
         public void printDrawerCashReport(ICashReport cashReport)
         {
             DOCINFOA docInfo = new DOCINFOA();
-
-            if (OpenPrinter("POS-58", out hPrinter, IntPtr.Zero))
+            // first parameter is the windows recognized name of the printer to be used
+            if (OpenPrinter("POS-58", out hPrinter, IntPtr.Zero))   // if WINAPI function OpenPrinter is successful..
             {
-                if (StartDocPrinter(hPrinter, 1, docInfo))
+                if (StartDocPrinter(hPrinter, 1, docInfo))          // if WINAPI function StartDocPrinter is successful..
                 {
-                    if (StartPagePrinter(hPrinter))
+                    if (StartPagePrinter(hPrinter))                 // if WINAPI function StartPagePrinter is successful..
                     {
+                        // printCashReportBody function encapsulates a series of functions called to facilitate the printing of a Cash Drawer Report
                         printCashReportBody(cashReport);
                     }
                 }
-                ClosePrinter(hPrinter);
+                ClosePrinter(hPrinter);                             // WINAPI function to close handle to printer
             }
         }
 
+        /**
+         * @desc function that encapsulates several function calls needed to print an order receipt
+         * @param IInvoice invoice object that holds all the required information needed to print
+         * @return void
+         */
         public void printBody(IInvoice invoice)
         {
+            // get total object reference that invoice object holds
             ITotal total = invoice.getTotal();
             List<ILineItem> lineItemList = invoice.getLineItemList();
             List<ILinePayment> paymentsList = total.getLinePaymentList();
@@ -161,6 +168,11 @@ namespace PrinterModule
             openCashDrawer();
         }
 
+        /**
+         * @desc function that encapsulates several function calls needed to print a cash report
+         * @param ICashReport report object that holds all the required information needed to print
+         * @return void
+         */
         public void printCashReportBody(ICashReport report)
         {
             initializePrinter();
@@ -185,16 +197,25 @@ namespace PrinterModule
             print(skipThree);
         }
 
+        /**
+         * @desc function that prints the control characters to printer to get it ready for a new print job
+         */
         public void initializePrinter()
         {
             print(initPrinter);
         }
 
+        /**
+         * @desc prints the title of the print job in large text then prints info about the store and the employee who created the order and the order number
+         * @params string title is the title text, string employeeName is the name of the employee on the order, string orderNumber is the order number
+         * @returns void
+         */
         public void printHeader(string title, string employeeName, string orderNumber)
         {
             print(largeText + centerAlign + title + lineFeed + cancelLargeText);
             print(centerAlign + fontA + DateTime.Now.ToString() + lineFeed + "(860)555-5555" + lineFeed + "68 East Pearl Street" + lineFeed + "Torrington, CT 06790" + skipTwo + leftAlign + "CASHIER: " + employeeName + lineFeed + leftAlign + orderNumber + skipTwo + leftAlign + fontB);
         }
+
 
         public void printReturnHeader(string title, string employeeName, string orderNumber)
         {
@@ -214,6 +235,11 @@ namespace PrinterModule
             cancelTabs();
         }
 
+        /**
+         * @desc limits length of strings to 14 characters so they fit better on printed receipts
+         * @params string str is the string to be truncated
+         * @returns a string that has been limited to 14 characters in length
+         */
         public string truncate(string str)
         {
             if (str.Length > 14)
@@ -316,12 +342,17 @@ namespace PrinterModule
             print("\x1B\x44\x00");
         }
 
+        /**
+         * @desc function that encapsulates some of the low level funcionality needed to actually print text on the device
+         * @params string msg which is the message or printer codes to be printed
+         * @return void
+         */
         public void print(string msg)
         {
             Int32 dwCount = 4;
             Int32 dwWritten = 0;
             IntPtr bPtr = new IntPtr(0);
-            dwCount = msg.ToCharArray().Length;
+            dwCount = msg.ToCharArray().Length;     // how many characters in string
             bPtr = Marshal.StringToCoTaskMemAnsi(msg);
             bool result = WritePrinter(hPrinter, bPtr, dwCount, out dwWritten);
             Marshal.FreeCoTaskMem(bPtr);
